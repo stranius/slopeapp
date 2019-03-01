@@ -42,16 +42,24 @@ class Graph {
 		//this.createSublines(1, 1);
 	}
 
-	change_x_axis_label(label, units) {
+	change_x_axis_label(label) {
 		this.x_axis_label = label;
-		this.x_units = units;
-		this.createLabels(this.x_axis_label, this.y_axis_label);
+		this.createLabels();
 	}
 
-	change_y_axis_label(label, units) {
+	change_y_axis_label(label) {
 		this.y_axis_label = label;
-		this.y_units = units;
-		this.createLabels(this.x_axis_label, this.y_axis_label);
+		this.createLabels();
+	}
+
+	change_x_axis_unit(unit) {
+		this.x_units = unit;
+		this.createLabels();
+	}
+
+	change_y_axis_unit(unit) {
+		this.y_units = unit;
+		this.createLabels();
 	}
 
 	change_x_max(num) {
@@ -335,14 +343,14 @@ class Graph {
 			.attr('y', this.offset.y + (this.cell_size * this.numRows) + this.cell_size)
 			.attr('font-family', 'sans-serif')
 			.attr('font-size', this.text_sizes.normal)
-			.text(x_label);
+			.text(this.x_axis_label + ' (' + this.x_units + ')');
 		this.texts.append('text')
 			.attr('transform', `rotate(-90)`)
 			.attr('x', -(this.offset.y + (this.cell_size * this.numRows) / 2 + this.cell_size))
 			.attr('y', this.offset.x - this.cell_size)
 			.attr('font-family', 'sans-serif')
 			.attr('font-size', this.text_sizes.normal)
-			.text(y_label);
+			.text(this.y_axis_label + ' (' + this.y_units + ')');
 	}
 
 	//Updates the formulas

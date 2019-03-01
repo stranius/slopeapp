@@ -65,7 +65,7 @@ class Sidebar {
       .attr('font-family', 'sans-serif')
       .attr('font-size', 20)
       .attr('class', 'sidebar_text')
-      .text('x-axis');
+      .text('x-axis label');
      holder.append('input') //Graph Size
       .attr('font-family', 'sans-serif')
       .attr('font-size', 20)
@@ -73,7 +73,7 @@ class Sidebar {
       .attr('type', 'string')
       .attr('value', this.graph.x_axis_label)
       .on('input', function() {
-        graph.change_x_axis_label(this.value, 'seconds');
+        graph.change_x_axis_label(this.value);
       });
 
     //Div for graphs y-axis labeling
@@ -84,7 +84,7 @@ class Sidebar {
       .attr('font-family', 'sans-serif')
       .attr('font-size', 20)
       .attr('class', 'sidebar_text')
-      .text('y-axis');
+      .text('y-axis label');
     holder.append('input') //Graph Size
       .attr('font-family', 'sans-serif')
       .attr('font-size', 20)
@@ -92,7 +92,45 @@ class Sidebar {
       .attr('type', 'string')
       .attr('value', this.graph.y_axis_label)
       .on('input', function() {
-        graph.change_y_axis_label(this.value, 'meters');
+        graph.change_y_axis_label(this.value);
+      });
+
+    //Div for graphs x-axis units
+    holder = sidebar_div.append('xhtml:div') //Div to hold all of the inputs
+      .attr('class', 'sidebar_box')
+      .attr('xmlns', 'http://www.w3.org/1999/xhtml');
+    holder.append('text') //Graph Size
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 20)
+      .attr('class', 'sidebar_text')
+      .text('x-axis units');
+    holder.append('input') //Graph Size
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 20)
+      .attr('class', 'sidebar_input')
+      .attr('type', 'string')
+      .attr('value', this.graph.x_units)
+      .on('input', function() {
+        graph.change_x_axis_unit(this.value);
+      });
+
+    //Div for graphs y-axis units
+    holder = sidebar_div.append('xhtml:div') //Div to hold all of the inputs
+      .attr('class', 'sidebar_box')
+      .attr('xmlns', 'http://www.w3.org/1999/xhtml');
+    holder.append('text') //Graph Size
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 20)
+      .attr('class', 'sidebar_text')
+      .text('y-axis units');
+    holder.append('input') //Graph Size
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', 20)
+      .attr('class', 'sidebar_input')
+      .attr('type', 'string')
+      .attr('value', this.graph.y_units)
+      .on('input', function() {
+        graph.change_y_axis_unit(this.value);
       });
 
     //Div for changing the graphs x-max
