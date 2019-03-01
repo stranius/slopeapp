@@ -2,48 +2,31 @@
 	height: 100vh;
 }
 
+body {
+	margin: 0px;
+}
+
+/* The following are styles for the sidebar of the application */
 .sidebar {
-	background-color: #2f415e;
+	background-color: ;
 	border-radius:0px 0px 0px 0px;
 	display: inline-block;
 	width: 100%;
-	height: 100vh;
+	height: auto;
 }
 
 .sidebar_box {
-	background-color: #3d5272;
-	border-style: none;
-	border-radius:0px;
+	background-color: #5288dd;
+	border-style: solid;
+	border-color: #c6dcff;
+	border-width: thin;
+	border-radius:20px 0px 0px 20px;
 	color: #f7f7f7;
 	display: run-in;
 	height: 30px;
+	padding: 5px;
+	margin: 0px 0px 0px 0px;
 	width: 100%;
-	padding: 5px;
-	margin: 2px 0px 0px 0px;
-}
-
-.sidebar_texts_box {
-	background-color: #3d5272;
-	border-style: none;
-	border-radius:0px;
-	color: #f7f7f7;
-	display: run-in;
-	height: 100%;
-	width: 30%;
-	padding: 5px;
-	margin: 10px 0px 0px 0px;
-}
-
-.sidebar_inputs_box {
-	background-color: #3d5272;
-	border-style: none;
-	border-radius:0px;
-	color: #f7f7f7;
-	display: run-in;
-	height: 100%;
-	width: 60%;
-	padding: 5px;
-	margin: 10px 0px 0px 0px;
 }
 
 .sidebar_text {
@@ -51,17 +34,98 @@
 	border-style: none;
 	color: #f7f7f7;
 	height: 25px;
-	width: 20%;
 	padding: 5px;
 	margin: 0px 0px;
+	width: 20%;
 }
 
 .sidebar_input {
-	background-color: #3d5272;
+	background-color: #5288dd;
 	border-style: none;
 	color: #f7f7f7;
 	height: 25px;
-	width: 50%;
 	padding: 5px;
 	margin: 0px 10px;
+	width: 50%;
 }
+/* END OF SIDEBAR STYLING */
+
+/* The following are styles for the footer bar of the application */
+.footer_bar {
+	background-color: #272f3a;
+	bottom: 0;
+	border-radius:20px 20px 0px 0px;
+	display: inline-block;
+	height: auto;
+	position: absolute;
+	margin: 0;
+	width: 100%;
+}
+
+.footer_input {
+	background-color: #272f3a;
+	border-color: black;
+	border-radius: 10px;
+	border-width: thin;
+	bottom: 0;
+	color: #f7f7f7;
+	display: inline-block;
+	height: auto;
+	margin-right: 20px;
+	padding: 10px 5px 10px 5px;
+}
+
+.footer_input:focus {
+	outline: 0;
+}
+
+.footer_regular_text {
+	background-color: none;
+	bottom: 0;
+	color: #f7f7f7;
+	display: inline-block;
+	height: auto;
+	margin-left: 20px;
+	padding: 10px 5px 10px 5px;
+	width: 50%;
+}
+
+.footer_regular_text_answer {
+	background-color: none;
+	bottom: 0;
+	color: #f7f7f7;
+	display: inline-block;
+	height: auto;
+	margin-left: 20px;
+	padding: 10px 5px 10px 5px;
+	width: 10%;
+}
+
+.footer_button {
+	background-color: #f7f7f7;
+	border-radius:20px;
+	border-style: outset;
+	bottom: 0;
+	color: #303030;
+	display: inline-block;
+	height: auto;
+	padding: 10px 10px 10px 10px;
+	x: 70%;
+}
+
+.footer_button:focus {
+	outline: 0;
+}
+
+.footer_button:hover {
+	background-color: #1cdd93;
+	border-color: #0ca067;
+	color: #f7f7f7;
+}
+
+.footer_button:active {
+	background-color: #12bc7b;
+	border-color: #046841;
+	color: #f7f7f7;
+}
+/* END OF FOOTER BAR STYLING */

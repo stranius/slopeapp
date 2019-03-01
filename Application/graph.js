@@ -1,7 +1,8 @@
 class Graph {
-	constructor(r, c) {
+	constructor(r, c, footer) {
 		this.svg = d3.select("#applet svg");
 		this.container = this.svg.append('g');
+		this.footer = footer;
 		this.endPointA = {x: 1, y: 9};
 		this.endPointB = {x: 9, y: 1};
 		//Declare the groups for each unique set of objects
@@ -18,15 +19,16 @@ class Graph {
 		this.scale = 400; //The size of a side of the graph, ex. 300px long
 		this.cell_size = this.scale / this.numRows;
 		this.offset = {x: 80, y: 30};
-		this.max_values = {x: 20, y: 20};
-		this.min_values = {x: -20, y: 0};
+		this.max_values = {x: 10, y: 10};
+		this.min_values = {x: 0, y: 0};
+		this.handle_distance = {x: 0, y: 0};
 		this.formula = {slope: 0, y_intercept: 0, x_intercept: 0};
 		this.text_sizes = {large: this.cell_size / 4 * 3, normal: this.cell_size / 5 * 2, small: this.cell_size / 7 * 2};
 		this.unit_per_square = {x: ((this.max_values.x - this.min_values.x) / this.numCols), y: ((this.max_values.y - this.min_values.y) / this.numRows)};
 		this.x_axis_label = "x-axis";
-		this.x_units = 'Undefined';
+		this.x_units = 'Seconds';
 		this.y_axis_label = "y-axis";
-		this.y_units = 'Undefines';
+		this.y_units = 'Meters';
 
 		this.createGraph();
 		this.update();
@@ -76,6 +78,13 @@ class Graph {
 		this.createGraph();
 	}
 
+	change_grid_size(num) {
+		this.numRows = Number(num);
+		this.numCols = Number(num);
+		this.cell_size = this.scale / this.numRows;
+		this.createGraph();
+	}
+
 	//This function creates the graph to be drawn
 	createGraph() {
 		let oldLines = this.graph_container.selectAll('rect');
@@ -119,15 +128,16 @@ class Graph {
 		let every_x = 1;
 		let every_y = 1;
 		//Loop for making the lines along the x axis
+		let group = this.graph_details.append('g');
 		for(let i = 0; i <= this.numCols; i+=every_x) {
-			this.graph_details.append('line') //Bottom lines of the graph
+			group.append('line') //Bottom lines of the graph
 				.attr('x1', i * this.cell_size + this.offset.x)
 				.attr('y1', this.cell_size * y_jump + this.offset.y - this.cell_size / 4)
 				.attr('x2', i * this.cell_size + this.offset.x)
 				.attr('y2', this.cell_size * y_jump + this.offset.y + this.cell_size / 4)
 				.attr('stroke-width', 1.5)
 				.attr('stroke', '#3f3f3f');
-			this.graph_details.append('text') //Text below the lines on the bottom on the graph
+			group.append('text') //Text below the lines on the bottom on the graph
 				.attr('x', i * this.cell_size + this.offset.x + this.cell_size / 10)
 				.attr('y', this.cell_size * y_jump + this.offset.y + this.cell_size / 2)
 				.attr('font-family', 'sans-serif')
@@ -135,14 +145,14 @@ class Graph {
 				.text(Number(this.unit_per_square.x * i + this.min_values.x).toFixed(1));
 		}
 		for(let i = 0; i <= this.numRows; i+=every_y) {
-			this.graph_details.append('line') //Left side lines of the graph
+			group.append('line') //Left side lines of the graph
 				.attr('x1', this.offset.x + this.cell_size * x_jump - this.cell_size / 4)
 				.attr('y1', i * this.cell_size + this.offset.y)
 				.attr('x2', this.offset.x + this.cell_size * x_jump + this.cell_size / 4)
 				.attr('y2', i * this.cell_size + this.offset.y)
 				.attr('stroke-width', 1.5)
 				.attr('stroke', '#3f3f3f');
-			this.graph_details.append('text') //Text on the left side lines of the graph
+			group.append('text') //Text on the left side lines of the graph
 				.attr('x', this.offset.x + this.cell_size * x_jump - this.cell_size / 2)
 				.attr('y', i * this.cell_size + this.offset.y - this.cell_size / 10)
 				.attr('font-family', 'sans-serif')
@@ -155,13 +165,6 @@ class Graph {
 		this.createHandle(this.endPointA, '#30c1ff');
 		this.createHandle(this.endPointB, '#218cff');
 		this.update();
-	}
-
-	//Creates sublines amount of lines along the x and y axis
-	createSublines(every_x, every_y) {
-		let oldLines = this.graph_details.selectAll('line');
-		oldLines.remove();
-
 	}
 
 	//This function creates a handle to grab and drag across the graph
@@ -261,6 +264,7 @@ class Graph {
 			high = this.endPointB;
 		}
 		//Dealing with the bottom d(x) lines and text
+		this.handle_distance.x = Number(Math.abs(left.x - right.x) * this.unit_per_square.x).toFixed(1);
 		this.dxdy.append('line') //Bottom Left x line
 			.attr('x1', left.x * this.cell_size + this.offset.x)
 			.attr('y1', low.y * this.cell_size + this.offset.y + this.cell_size / 3)
@@ -284,7 +288,7 @@ class Graph {
 			.attr('y', low.y * this.cell_size + this.offset.y + this.cell_size)
 			.attr('font-family', 'sans-serif')
 			.attr('font-size', this.text_sizes.normal)
-			.text(Number(Math.abs(left.x - right.x) * this.unit_per_square.x).toFixed(0));
+			.text(this.handle_distance.x);
 
 		//Dealing with the side d(y) lines and text
 		let side = left;
@@ -293,6 +297,7 @@ class Graph {
 			side = right;
 			side_multiplier = 1;
 		}
+		this.handle_distance.y = Number(Math.abs(low.y - high.y) * this.unit_per_square.y).toFixed(1);
 		this.dxdy.append('line') //Top Side y line
 			.attr('x1', side.x * this.cell_size + this.offset.x + this.cell_size / 3 * 2 * side_multiplier)
 			.attr('y1', high.y * this.cell_size + this.offset.y)
@@ -316,7 +321,9 @@ class Graph {
 			.attr('y', (high.y * this.cell_size + this.offset.y) + (low.y - high.y) * this.cell_size / 2)
 			.attr('font-family', 'sans-serif')
 			.attr('font-size', this.text_sizes.normal)
-			.text(Number(Math.abs(low.y - high.y) * this.unit_per_square.y).toFixed(0));
+			.text(this.handle_distance.y);
+
+		this.footer.change_question(this.x_units, this.y_units, this.handle_distance.x, this.handle_distance.y);
 	}
 
 	//Creates the labels for the x-axis and y-axis
@@ -361,15 +368,6 @@ class Graph {
 			.attr('font-family', 'sans-serif')
 			.attr('font-size', this.text_sizes.normal)
 			.text('b = ' + Number(this.formula.y_intercept.toFixed(2)));
-		this.formulas.append('text')
-			.attr('x', this.offset.x + (this.cell_size * this.numRows) + 30)
-			.attr('y', this.offset.y + 20)
-			.attr('font-family', 'sans-serif')
-			.attr('font-size', this.text_sizes.normal)
-			.attr('contentEditable', true)
-			.text('If John can run ' + Number(this.formula.slope.toFixed(2)) + ' ' + this.y_units + ' / ' + this.x_units + ', how far has John traveled after ' + Number(Math.abs(this.endPointA.x - this.endPointB.x) * this.unit_per_square.x).toFixed(0) + ' ' + this.x_units + '?')
-			.call(wrap, this.cell_size * 10);
-
 	}
 
 	//Updates the inforamtion inside of Graph

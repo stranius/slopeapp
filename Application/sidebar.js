@@ -38,16 +38,23 @@ class Sidebar {
     holder.append('input') //Graph Size
       .attr('x', 30)
       .attr('y', 50)
-      .attr('max', 7)
+      .attr('max', 3)
       .attr('min', 1)
       .attr('width', '40%')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 20)
       .attr('class', 'sidebar_input')
       .attr('type', 'number')
-      .attr('value', this.graph_size / 100)
+      .attr('value', this.graph_size / 100 - 3)
       .on('input', function() {
-        graph.change_graph_size(this.value);
+        let numToPass = this.value;
+        if(this.value <= 0)
+          numToPass = 1;
+        else if(this.value > 3) {
+          this.value = 3;
+          numToPass = 3;
+        }
+        graph.change_graph_size(Number(numToPass) + 3);
       });
 
     //Div for graphs x-axis labeling
